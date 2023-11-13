@@ -55,6 +55,12 @@ export class BookmarkTreeProvider
     this.saveItems();
     this.refresh();
   }
+  openBookmark(item: number) {
+    const fileUri = this.itemsUri[item - 1];
+    vscode.workspace.openTextDocument(fileUri).then((document) => {
+      vscode.window.showTextDocument(document);
+    });
+  }
   private saveItems() {
     this.context.workspaceState.update("markCodeItems", this.itemsUri);
   }

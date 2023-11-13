@@ -30,7 +30,15 @@ function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand("markCode.removeAllItems", () => {
         bookmarkTree.deleteAll();
       }),
-
+      vscode.commands.registerCommand("markCode.open1", () => {
+        bookmarkTree.openBookmark(1);
+      }),
+      vscode.commands.registerCommand("markCode.open2", () => {
+        bookmarkTree.openBookmark(2);
+      }),
+      vscode.commands.registerCommand("markCode.open3", () => {
+        bookmarkTree.openBookmark(3);
+      }),
       vscode.commands.registerCommand("markCode.openFile", (file) => {
         vscode.commands.executeCommand(
           "vscode.open",
