@@ -8,7 +8,9 @@ function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     ...[
       vscode.window.registerTreeDataProvider("markCode", bookmarkTree),
-      vscode.commands.registerCommand("markCode.refreshEntry", () => {}),
+      vscode.commands.registerCommand("markCode.refreshEntry", () => {
+        bookmarkTree.refresh();
+      }),
       vscode.commands.registerCommand("markCode.addItem", (args) => {
         if (args) {
           //if Right Click and select add to Bookmark tree
