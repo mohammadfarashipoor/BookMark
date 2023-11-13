@@ -50,6 +50,11 @@ export class BookmarkTreeProvider
     this.saveItems();
     this.refresh();
   }
+  deleteAll() {
+    this.itemsUri = [];
+    this.saveItems();
+    this.refresh();
+  }
   private saveItems() {
     this.context.workspaceState.update("markCodeItems", this.itemsUri);
   }
