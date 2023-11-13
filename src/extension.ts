@@ -40,10 +40,36 @@ function activate(context: vscode.ExtensionContext) {
         bookmarkTree.openBookmark(3);
       }),
       vscode.commands.registerCommand("markCode.openFile", (file) => {
-        vscode.commands.executeCommand(
-          "vscode.open",
-          vscode.Uri.parse(file.resourceUri.path)
-        );
+        const { path } = file?.resourceUri;
+        const pathUri: vscode.Uri = vscode.Uri.parse(path);
+        const folderPath: string = vscode.Uri.joinPath(pathUri).fsPath;
+        let isDirectory: boolean = true;
+        try {
+          isDirectory = statSync(folderPath).isDirectory();
+        } catch (error) {
+          vscode.window.showErrorMessage(`unknown type file ${error}`);
+        }
+        if (!isDirectory) {
+          //if is file open Text Document a new tab
+          vscode.commands.executeCommand("vscode.open", pathUri);
+        } else {
+          //else if is Directory read files in Directory
+          readdir(folderPath, (err, files) => {
+            if (err) {
+              vscode.window.showErrorMessage(
+                `Error reading folder ${err.message}`
+              );
+              return;
+            }
+            files.forEach((file) => {
+              //for each file create path and open Text Document a new tab( { preview: false } )
+              const fileUri = `${folderPath}/${file}`;
+              vscode.workspace.openTextDocument(fileUri).then((document) => {
+                vscode.window.showTextDocument(document, { preview: false });
+              });
+            });
+          });
+        }
       }),
     ]
   );
