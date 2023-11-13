@@ -40,13 +40,16 @@ export class BookmarkTreeProvider
       (uri) => new FileSystemObject(path.basename(uri.path), uri)
     );
   }
-
   addItem(uri: vscode.Uri) {
     this.itemsUri.push(uri);
     this.saveItems();
     this.refresh();
   }
-
+  deleteItem(path: string) {
+    this.itemsUri = this.itemsUri.filter((uri) => uri.path !== path);
+    this.saveItems();
+    this.refresh();
+  }
   private saveItems() {
     this.context.workspaceState.update("markCodeItems", this.itemsUri);
   }

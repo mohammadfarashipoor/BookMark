@@ -22,7 +22,9 @@ function activate(context: vscode.ExtensionContext) {
           }
         }
       }),
-      vscode.commands.registerCommand("markCode.removeItem", (args) => {}),
+      vscode.commands.registerCommand("markCode.removeItem", (args) => {
+        bookmarkTree.deleteItem(args.resourceUri.path);
+      }),
       vscode.commands.registerCommand("markCode.removeAllItems", () => {}),
 
       vscode.commands.registerCommand("markCode.openFile", (file) => {
