@@ -17,15 +17,23 @@ function activate(context: vscode.ExtensionContext) {
           bookmarkTree.addItem(vscode.Uri.parse(args.path));
         } else {
           //if Command Palette (Ctrl + Shift + p ) and select  add to Bookmark tree
-          if (vscode?.window?.activeTextEditor?.document?.uri) {
-            bookmarkTree.addItem(
-              vscode?.window?.activeTextEditor?.document?.uri
-            );
+          const activeTextEditor = vscode?.window?.activeTextEditor?.document;
+          if (activeTextEditor?.uri) {
+            bookmarkTree.addItem(activeTextEditor?.uri);
           }
         }
       }),
       vscode.commands.registerCommand("markCode.removeItem", (args) => {
-        bookmarkTree.deleteItem(args.resourceUri.path);
+        if (args) {
+          //if Right Click and select remove of Bookmark tree
+          bookmarkTree.deleteItem(args.resourceUri.path);
+        } else {
+          //if Command Palette (Ctrl + Shift + p ) and select  remove of Bookmark tree
+          const activeTextEditor = vscode?.window?.activeTextEditor?.document;
+          if (activeTextEditor?.uri) {
+            bookmarkTree.deleteItem(activeTextEditor?.uri?.path);
+          }
+        }
       }),
       vscode.commands.registerCommand("markCode.removeAllItems", () => {
         bookmarkTree.deleteAll();
